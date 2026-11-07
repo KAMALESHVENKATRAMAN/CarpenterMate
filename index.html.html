@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#17251e">
+<title>Carpenter Mate</title>
+<style>
+:root{--bg:#f4f6f3;--card:#fff;--ink:#17251e;--muted:#68766d;--green:#176b45;--green2:#e6f3eb;--line:#e2e8e2;--orange:#e99a36;--shadow:0 8px 28px #152b1b0d}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,Segoe UI,sans-serif}
+header{background:#17251e;color:#fff;padding:18px max(18px,calc((100% - 1120px)/2));display:flex;align-items:center;justify-content:space-between;gap:16px;position:sticky;top:0;z-index:5}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:42px;height:42px;border-radius:13px;background:#e6f3eb;color:#176b45;display:grid;place-items:center;font-size:23px}.brand h1{font-size:19px;margin:0}.brand small{color:#b7c8bd}
+select,input,button{font:inherit}header select{background:#26382e;color:#fff;border:1px solid #526458;border-radius:10px;padding:10px;max-width:150px}
+main{max-width:1120px;margin:auto;padding:24px 18px 50px}.welcome{display:flex;justify-content:space-between;align-items:center;gap:18px;margin:8px 0 22px}.welcome h2{font-size:clamp(23px,4vw,31px);margin:0 0 6px}.welcome p{color:var(--muted);margin:0}.tag{background:var(--green2);color:var(--green);border-radius:99px;padding:8px 12px;font-size:12px;font-weight:700;white-space:nowrap}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.tool{background:var(--card);border:1px solid var(--line);border-radius:17px;padding:18px;text-align:left;cursor:pointer;box-shadow:var(--shadow);transition:.18s;color:var(--ink)}.tool:hover{transform:translateY(-2px);border-color:#9bc6a9}.tool .ico{font-size:25px;display:block;margin-bottom:12px}.tool strong{display:block;font-size:16px;margin-bottom:5px}.tool small{color:var(--muted);line-height:1.4}
+.panel{display:none;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;margin-top:20px;box-shadow:var(--shadow)}.panel.active{display:block}.panel-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:18px}.panel h3{margin:0;font-size:20px}.back{border:0;background:var(--green2);color:var(--green);border-radius:9px;padding:9px 13px;cursor:pointer;font-weight:650}
+.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.field label{display:block;font-size:13px;font-weight:650;margin-bottom:7px}.field input,.field select{width:100%;padding:12px;border:1px solid #ccd7ce;border-radius:10px;background:#fff;color:var(--ink);outline:none}.field input:focus,.field select:focus{border-color:var(--green);box-shadow:0 0 0 3px #176b4518}
+.actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}.primary,.secondary{border:0;border-radius:10px;padding:12px 18px;cursor:pointer;font-weight:700}.primary{background:var(--green);color:white}.secondary{background:#edf1ed;color:var(--ink)}
+.result{margin-top:18px;padding:16px;border-radius:12px;background:var(--green2);color:#145536;display:none}.result.show{display:block}.result strong{font-size:22px;display:block;margin:5px 0}.result small{color:#426b52}
+.note{font-size:12px;color:var(--muted);margin-top:12px;line-height:1.5}.home-link{display:inline-block;margin-top:18px;color:var(--green);font-weight:700;text-decoration:none}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:10px 18px 25px}
+@media(max-width:720px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.welcome{align-items:flex-start;flex-direction:column}.form-grid{grid-template-columns:1fr}header{padding:13px 16px}.panel{padding:17px}}
+@media(max-width:390px){.grid{grid-template-columns:1fr 1fr;gap:9px}.tool{padding:13px}.tool strong{font-size:14px}.tool small{font-size:11px}}
+</style>
+</head>
+<body>
+<header>
+ <div class="brand"><div class="logo">🪚</div><div><h1>Carpenter Mate</h1><small data-i18n="tagline">Smart workshop calculator</small></div></div>
+ <select id="language" aria-label="Choose language">
+  <option value="en">English</option><option value="ta">தமிழ்</option><option value="hi">हिंदी</option><option value="ml">മലയാളം</option>
+ </select>
+</header>
+<main>
+ <section id="home">
+  <div class="welcome"><div><h2 data-i18n="welcome">Your workshop, made simpler.</h2><p data-i18n="subtitle">Measure, calculate and estimate in a few taps.</p></div><span class="tag" data-i18n="offline">● Works offline</span></div>
+  <div class="grid">
+   <button class="tool" data-panel="length"><span class="ico">📏</span><strong data-i18n="length">Length converter</strong><small data-i18n="lengthDesc">Feet, inches, cm and mm</small></button>
+   <button class="tool" data-panel="board"><span class="ico">🪵</span><strong data-i18n="board">Board feet</strong><small data-i18n="boardDesc">Calculate wood volume</small></button>
+   <button class="tool" data-panel="area"><span class="ico">▦</span><strong data-i18n="area">Area calculator</strong><small data-i18n="areaDesc">Square feet and metres</small></button>
+   <button class="tool" data-panel="cost"><span class="ico">₹</span><strong data-i18n="cost">Material cost</strong><small data-i18n="costDesc">Estimate quantity and price</small></button>
+   <button class="tool" data-panel="cut"><span class="ico">✂️</span><strong data-i18n="cut">Cutting planner</strong><small data-i18n="cutDesc">Pieces from one board</small></button>
+   <button class="tool" data-panel="calculator"><span class="ico">🧮</span><strong data-i18n="calculator">Quick calculator</strong><small data-i18n="calculatorDesc">Basic workshop maths</small></button>
+  </div>
+ </section>
+
+ <section class="panel" id="length">
+  <div class="panel-head"><h3 data-i18n="length">Length converter</h3><button class="back" data-i18n="back">← Home</button></div>
+  <div class="form-grid">
+   <div class="field"><label data-i18n="value">Value</label><input id="lenValue" type="number" min="0" step="any" placeholder="Enter measurement"></div>
+   <div class="field"><label data-i18n="fromUnit">From</label><select id="lenUnit"><option value="ft">Feet</option><option value="in">Inches</option><option value="cm">Centimetres</option><option value="mm">Millimetres</option><option value="m">Metres</option></select></div>
+  </div>
+  <div class="actions"><button class="primary" onclick="convertLength()" data-i18n="calculate">Calculate</button></div><div class="result" id="lenResult" aria-live="polite"></div>
+ </section>
+
+ <section class="panel" id="board">
+  <div class="panel-head"><h3 data-i18n="board">Board feet</h3><button class="back" data-i18n="back">← Home</button></div>
+  <div class="form-grid">
+   <div class="field"><label data-i18n="thickness">Thickness (inches)</label><input id="bfT" type="number" min="0" step="any" placeholder="e.g. 1"></div>
+   <div class="field"><label data-i18n="widthIn">Width (inches)</label><input id="bfW" type="number" min="0" step="any" placeholder="e.g. 12"></div>
+   <div class="field"><label data-i18n="lengthFt">Length (feet)</label><input id="bfL" type="number" min="0" step="any" placeholder="e.g. 8"></div>
+   <div class="field"><label data-i18n="quantity">Number of boards</label><input id="bfQ" type="number" min="1" step="1" value="1"></div>
+  </div>
+  <div class="actions"><button class="primary" onclick="boardFeet()" data-i18n="calculate">Calculate</button></div><div class="result" id="bfResult" aria-live="polite"></div>
+  <p class="note" data-i18n="bfNote">Formula: thickness × width × length ÷ 12 × quantity. One board foot = 144 cubic inches.</p>
+ </section>
+
+ <section class="panel" id="area">
+  <div class="panel-head"><h3 data-i18n="area">Area calculator</h3><button class="back" data-i18n="back">← Home</button></div>
+  <div class="form-grid">
+   <div class="field"><label data-i18n="lengthFt">Length (feet)</label><input id="areaL" type="number" min="0" step="any"></div>
+   <div class="field"><label data-i18n="widthFt">Width (feet)</label><input id="areaW" type="number" min="0" step="any"></div>
+  </div>
+  <div class="actions"><button class="primary" onclick="areaCalc()" data-i18n="calculate">Calculate</button></div><div class="result" id="areaResult" aria-live="polite"></div>
+ </section>
+
+ <section class="panel" id="cost">
+  <div class="panel-head"><h3 data-i18n="cost">Material cost</h3><button class="back" data-i18n="back">← Home</button></div>
+  <div class="form-grid">
+   <div class="field"><label data-i18n="quantity">Quantity</label><input id="costQty" type="number" min="0" step="any" placeholder="e.g. 12"></div>
+   <div class="field"><label data-i18n="unitPrice">Price per unit (₹)</label><input id="costPrice" type="number" min="0" step="any" placeholder="e.g. 250"></div>
+   <div class="field"><label data-i18n="waste">Extra wastage (%)</label><input id="costWaste" type="number" min="0" max="100" step="any" value="10"></div>
+  </div>
+  <div class="actions"><button class="primary" onclick="costCalc()" data-i18n="calculate">Calculate</button></div><div class="result" id="costResult" aria-live="polite"></div>
+  <p class="note" data-i18n="costNote">This is an estimate. Confirm actual material dimensions and supplier rates before purchasing.</p>
+ </section>
+
+ <section class="panel" id="cut">
+  <div class="panel-head"><h3 data-i18n="cut">Cutting planner</h3><button class="back" data-i18n="back">← Home</button></div>
+  <div class="form-grid">
+   <div class="field"><label data-i18n="boardLength">Board length (same unit)</label><input id="cutBoard" type="number" min="0" step="any" placeholder="e.g. 96"></div>
+   <div class="field"><label data-i18n="pieceLength">Required piece length</label><input id="cutPiece" type="number" min="0" step="any" placeholder="e.g. 24"></div>
+   <div class="field"><label data-i18n="piecesNeeded">Pieces needed</label><input id="cutQty" type="number" min="1" step="1" value="1"></div>
+   <div class="field"><label data-i18n="kerf">Blade thickness / kerf (same unit)</label><input id="cutKerf" type="number" min="0" step="any" value="0"></div>
+  </div>
+  <div class="actions"><button class="primary" onclick="cutCalc()" data-i18n="calculate">Calculate</button></div><div class="result" id="cutResult" aria-live="polite"></div>
+  <p class="note" data-i18n="cutNote">Simple straight-cut estimate. Grain direction, defects and end trimming are not included.</p>
+ </section>
+
+ <section class="panel" id="calculator">
+  <div class="panel-head"><h3 data-i18n="calculator">Quick calculator</h3><button class="back" data-i18n="back">← Home</button></div>
+  <div class="field"><label data-i18n="expression">Calculation (example: 12*8+4)</label><input id="expression" type="text" inputmode="decimal" placeholder="12 * 8 + 4"></div>
+  <div class="actions"><button class="primary" onclick="quickCalc()" data-i18n="calculate">Calculate</button><button class="secondary" onclick="document.getElementById('expression').value='';document.getElementById('quickResult').classList.remove('show')" data-i18n="clear">Clear</button></div>
+  <div class="result" id="quickResult" aria-live="polite"></div><p class="note" data-i18n="quickNote">Use +, −, ×, ÷ and parentheses. Only basic arithmetic is supported.</p>
+ </section>
+</main>
+<footer>Carpenter Mate · <span data-i18n="footer">Made for everyday workshop calculations</span></footer>
+<script>
+const translations={
+en:{tagline:"Smart workshop calculator",welcome:"Your workshop, made simpler.",subtitle:"Measure, calculate and estimate in a few taps.",offline:"● Works offline",length:"Length converter",lengthDesc:"Feet, inches, cm and mm",board:"Board feet",boardDesc:"Calculate wood volume",area:"Area calculator",areaDesc:"Square feet and metres",cost:"Material cost",costDesc:"Estimate quantity and price",cut:"Cutting planner",cutDesc:"Pieces from one board",calculator:"Quick calculator",calculatorDesc:"Basic workshop maths",back:"← Home",value:"Value",fromUnit:"From",calculate:"Calculate",thickness:"Thickness (inches)",widthIn:"Width (inches)",lengthFt:"Length (feet)",quantity:"Quantity",bfNote:"Formula: thickness × width × length ÷ 12 × quantity. One board foot = 144 cubic inches.",widthFt:"Width (feet)",unitPrice:"Price per unit (₹)",waste:"Extra wastage (%)",costNote:"Estimate only. Confirm actual dimensions and supplier rates before purchasing.",boardLength:"Board length (same unit)",pieceLength:"Required piece length",piecesNeeded:"Pieces needed",kerf:"Blade thickness / kerf (same unit)",cutNote:"Simple straight-cut estimate. Grain direction, defects and end trimming are not included.",expression:"Calculation (example: 12*8+4)",clear:"Clear",quickNote:"Use +, −, ×, ÷ and parentheses. Only basic arithmetic is supported.",footer:"Made for everyday workshop calculations",enterValid:"Please enter valid positive values.",result:"Result",total:"Total",boards:"Boards required",piecesPerBoard:"Pieces per board",remainder:"Remaining length",sqft:"Square feet",sqm:"Square metres",cm:"cm",mm:"mm",inch:"inches",feet:"feet",metres:"metres",boardFeet:"board feet",estimatedQty:"Quantity including wastage",estimatedCost:"Estimated cost",currency:"₹",invalidExpression:"Please enter a valid basic calculation."},
+ta:{tagline:"பணிமனை கணிப்பான்",welcome:"உங்கள் பணிமனை இனி எளிது.",subtitle:"அளவிடுங்கள், கணக்கிடுங்கள், சில தொடுதல்களில் மதிப்பிடுங்கள்.",offline:"● இணையமின்றியும் இயங்கும்",length:"நீள மாற்றி",lengthDesc:"அடி, அங்குலம், செ.மீ மற்றும் மி.மீ",board:"மர அளவு (Board feet)",boardDesc:"மரத்தின் கன அளவு",area:"பரப்பளவு கணிப்பான்",areaDesc:"சதுர அடி மற்றும் சதுர மீட்டர்",cost:"பொருள் செலவு",costDesc:"அளவு மற்றும் விலை மதிப்பீடு",cut:"வெட்டும் திட்டம்",cutDesc:"ஒரு பலகையிலிருந்து துண்டுகள்",calculator:"விரைவு கணிப்பான்",calculatorDesc:"அடிப்படை கணக்குகள்",back:"← முகப்பு",value:"மதிப்பு",fromUnit:"அலகு",calculate:"கணக்கிடு",thickness:"தடிமன் (அங்குலம்)",widthIn:"அகலம் (அங்குலம்)",lengthFt:"நீளம் (அடி)",quantity:"எண்ணிக்கை",bfNote:"சூத்திரம்: தடிமன் × அகலம் × நீளம் ÷ 12 × எண்ணிக்கை.",widthFt:"அகலம் (அடி)",unitPrice:"ஒரு அலகின் விலை (₹)",waste:"கூடுதல் வீணாக்கம் (%)",costNote:"இது ஒரு மதிப்பீடு மட்டுமே. வாங்குவதற்கு முன் அளவுகளையும் விலையையும் சரிபார்க்கவும்.",boardLength:"பலகை நீளம் (ஒரே அலகு)",pieceLength:"தேவையான துண்டின் நீளம்",piecesNeeded:"தேவையான துண்டுகள்",kerf:"கத்தி அகலம் (அதே அலகு)",cutNote:"இது எளிய நேர்வெட்டு மதிப்பீடு. மரக் குறைபாடுகள் கணக்கில் இல்லை.",expression:"கணக்கு (உதா: 12*8+4)",clear:"அழி",quickNote:"+, −, ×, ÷ மற்றும் அடைப்புக்குறிகளைப் பயன்படுத்தவும்.",footer:"தினசரி தச்சு வேலை கணக்குகளுக்காக",enterValid:"சரியான நேர்மறை மதிப்புகளை உள்ளிடவும்.",result:"முடிவு",total:"மொத்தம்",boards:"தேவையான பலகைகள்",piecesPerBoard:"ஒரு பலகைக்கான துண்டுகள்",remainder:"மீதமுள்ள நீளம்",sqft:"சதுர அடி",sqm:"சதுர மீட்டர்",cm:"செ.மீ",mm:"மி.மீ",inch:"அங்குலம்",feet:"அடி",metres:"மீட்டர்",boardFeet:"பலகை அடி",estimatedQty:"வீணாக்கத்துடன் அளவு",estimatedCost:"மதிப்பிடப்பட்ட செலவு",currency:"₹",invalidExpression:"சரியான கணக்கை உள்ளிடவும்."},
+hi:{tagline:"स्मार्ट कार्यशाला कैलकुलेटर",welcome:"आपका काम अब और आसान।",subtitle:"कुछ टैप में मापें, गणना करें और अनुमान लगाएं।",offline:"● ऑफलाइन काम करता है",length:"लंबाई कनवर्टर",lengthDesc:"फीट, इंच, सेमी और मिमी",board:"बोर्ड फीट",boardDesc:"लकड़ी का आयतन",area:"क्षेत्रफल कैलकुलेटर",areaDesc:"वर्ग फीट और वर्ग मीटर",cost:"सामग्री की लागत",costDesc:"मात्रा और कीमत का अनुमान",cut:"कटिंग प्लानर",cutDesc:"एक बोर्ड से टुकड़े",calculator:"क्विक कैलकुलेटर",calculatorDesc:"सामान्य गणना",back:"← होम",value:"मान",fromUnit:"इकाई",calculate:"गणना करें",thickness:"मोटाई (इंच)",widthIn:"चौड़ाई (इंच)",lengthFt:"लंबाई (फीट)",quantity:"मात्रा",bfNote:"सूत्र: मोटाई × चौड़ाई × लंबाई ÷ 12 × मात्रा।",widthFt:"चौड़ाई (फीट)",unitPrice:"प्रति इकाई कीमत (₹)",waste:"अतिरिक्त बर्बादी (%)",costNote:"यह अनुमान है। खरीदने से पहले वास्तविक माप और कीमत जांचें।",boardLength:"बोर्ड की लंबाई (एक ही इकाई)",pieceLength:"टुकड़े की लंबाई",piecesNeeded:"आवश्यक टुकड़े",kerf:"ब्लेड की मोटाई (उसी इकाई में)",cutNote:"सरल कटिंग अनुमान। लकड़ी की खराबी शामिल नहीं है।",expression:"गणना (उदाहरण: 12*8+4)",clear:"साफ़ करें",quickNote:"+, −, ×, ÷ और ब्रैकेट का उपयोग करें।",footer:"रोज़मर्रा के बढ़ईगीरी काम के लिए",enterValid:"कृपया सही धनात्मक मान डालें।",result:"परिणाम",total:"कुल",boards:"आवश्यक बोर्ड",piecesPerBoard:"प्रति बोर्ड टुकड़े",remainder:"बची लंबाई",sqft:"वर्ग फीट",sqm:"वर्ग मीटर",cm:"सेमी",mm:"मिमी",inch:"इंच",feet:"फीट",metres:"मीटर",boardFeet:"बोर्ड फीट",estimatedQty:"बर्बादी सहित मात्रा",estimatedCost:"अनुमानित लागत",currency:"₹",invalidExpression:"सही गणना दर्ज करें."},
+ml:{tagline:"സ്മാർട്ട് വർക്ക്‌ഷോപ്പ് കാൽക്കുലേറ്റർ",welcome:"നിങ്ങളുടെ ജോലി ഇനി എളുപ്പം.",subtitle:"കുറച്ച് ടാപ്പുകളിൽ അളക്കുക, കണക്കാക്കുക.",offline:"● ഓഫ്‌ലൈനിലും പ്രവർത്തിക്കും",length:"നീളം മാറ്റുക",lengthDesc:"അടി, ഇഞ്ച്, സെ.മീ, മി.മീ",board:"ബോർഡ് ഫീറ്റ്",boardDesc:"മരത്തിന്റെ അളവ്",area:"വിസ്തീർണ്ണ കാൽക്കുലേറ്റർ",areaDesc:"ചതുരശ്ര അടിയും മീറ്ററും",cost:"മെറ്റീരിയൽ ചെലവ്",costDesc:"അളവും വിലയും കണക്കാക്കുക",cut:"കട്ടിംഗ് പ്ലാനർ",cutDesc:"ഒരു ബോർഡിൽ നിന്നുള്ള കഷണങ്ങൾ",calculator:"ക്വിക്ക് കാൽക്കുലേറ്റർ",calculatorDesc:"അടിസ്ഥാന കണക്കുകൾ",back:"← ഹോം",value:"മൂല്യം",fromUnit:"യൂണിറ്റ്",calculate:"കണക്കാക്കുക",thickness:"കനം (ഇഞ്ച്)",widthIn:"വീതി (ഇഞ്ച്)",lengthFt:"നീളം (അടി)",quantity:"എണ്ണം",bfNote:"സൂത്രം: കനം × വീതി × നീളം ÷ 12 × എണ്ണം.",widthFt:"വീതി (അടി)",unitPrice:"ഒരു യൂണിറ്റിന്റെ വില (₹)",waste:"അധിക പാഴാക്കൽ (%)",costNote:"ഇത് ഏകദേശ കണക്കാണ്. വാങ്ങുന്നതിന് മുമ്പ് അളവും വിലയും പരിശോധിക്കുക.",boardLength:"ബോർഡ് നീളം (ഒരേ യൂണിറ്റ്)",pieceLength:"ആവശ്യമായ കഷണത്തിന്റെ നീളം",piecesNeeded:"ആവശ്യമായ കഷണങ്ങൾ",kerf:"ബ്ലേഡ് കനം (അതേ യൂണിറ്റ്)",cutNote:"ലളിതമായ കട്ടിംഗ് കണക്ക്. മരത്തിലെ തകരാറുകൾ ഉൾപ്പെടുത്തിയിട്ടില്ല.",expression:"കണക്ക് (ഉദാ: 12*8+4)",clear:"മായ്ക്കുക",quickNote:"+, −, ×, ÷ എന്നിവയും ബ്രാക്കറ്റുകളും ഉപയോഗിക്കുക.",footer:"ദൈനംദിന മരപ്പണി കണക്കുകൾക്കായി",enterValid:"ശരിയായ പോസിറ്റീവ് മൂല്യങ്ങൾ നൽകുക.",result:"ഫലം",total:"ആകെ",boards:"ആവശ്യമായ ബോർഡുകൾ",piecesPerBoard:"ഒരു ബോർഡിലെ കഷണങ്ങൾ",remainder:"ബാക്കിയുള്ള നീളം",sqft:"ചതുരശ്ര അടി",sqm:"ചതുരശ്ര മീറ്റർ",cm:"സെ.മീ",mm:"മി.മീ",inch:"ഇഞ്ച്",feet:"അടി",metres:"മീറ്റർ",boardFeet:"ബോർഡ് ഫീറ്റ്",estimatedQty:"പാഴാക്കൽ ഉൾപ്പെടെയുള്ള അളവ്",estimatedCost:"ഏകദേശ ചെലവ്",currency:"₹",invalidExpression:"ശരിയായ കണക്ക് നൽകുക."}
+};
+let lang="en";const t=k=>translations[lang][k]||translations.en[k]||k;
+document.getElementById("language").addEventListener("change",e=>{lang=e.target.value;document.documentElement.lang=lang;document.querySelectorAll("[data-i18n]").forEach(el=>el.textContent=t(el.dataset.i18n));});
+document.querySelectorAll(".tool").forEach(b=>b.addEventListener("click",()=>{document.getElementById("home").style.display="none";document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));document.getElementById(b.dataset.panel).classList.add("active");window.scrollTo({top:0,behavior:"smooth"});}));
+document.querySelectorAll(".back").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".panel").forEach(p=>p.classList.remove("active"));document.getElementById("home").style.display="block";window.scrollTo({top:0,behavior:"smooth"});}));
+function num(id){return Number(document.getElementById(id).value)}
+function valid(values){return values.every(v=>Number.isFinite(v)&&v>0)}
+function show(id,html){const el=document.getElementById(id);el.innerHTML=html;el.classList.add("show")}
+function fmt(n){return n.toLocaleString(undefined,{maximumFractionDigits:3})}
+function convertLength(){const v=num("lenValue"),u=document.getElementById("lenUnit").value;if(!valid([v]))return show("lenResult",t("enterValid"));const inches={ft:12,in:1,cm:1/2.54,mm:1/25.4,m:39.37007874}[u],inch=v*inches;show("lenResult",`<small>${t("result")}</small><strong>${fmt(inch/12)} ${t("feet")}</strong>${fmt(inch)} ${t("inch")} · ${fmt(inch*2.54)} ${t("cm")} · ${fmt(inch*25.4)} ${t("mm")} · ${fmt(inch/39.37007874)} ${t("metres")}`)}
+function boardFeet(){const a=[num("bfT"),num("bfW"),num("bfL"),num("bfQ")];if(!valid(a))return show("bfResult",t("enterValid"));const total=a[0]*a[1]*a[2]/12*a[3];show("bfResult",`<small>${t("total")}</small><strong>${fmt(total)} ${t("boardFeet")}</strong>${fmt(total/a[3])} per board · ${a[3]} board(s)`)}
+function areaCalc(){const a=num("areaL"),b=num("areaW");if(!valid([a,b]))return show("areaResult",t("enterValid"));const sqft=a*b;show("areaResult",`<small>${t("result")}</small><strong>${fmt(sqft)} ${t("sqft")}</strong>${fmt(sqft/10.7639)} ${t("sqm")}`)}
+function costCalc(){const q=num("costQty"),p=num("costPrice"),w=num("costWaste");if(!valid([q,p])||!Number.isFinite(w)||w<0||w>100)return show("costResult",t("enterValid"));const qty=q*(1+w/100),cost=qty*p;show("costResult",`<small>${t("estimatedQty")}</small><strong>${fmt(qty)}</strong>${t("estimatedCost")}: <b>${t("currency")}${fmt(cost)}</b> · Base: ${t("currency")}${fmt(q*p)}`)}
+function cutCalc(){const b=num("cutBoard"),p=num("cutPiece"),q=num("cutQty"),k=num("cutKerf");if(!valid([b,p,q])||!Number.isFinite(k)||k<0)return show("cutResult",t("enterValid"));const per=Math.floor((b+k)/(p+k)),boards=Math.ceil(q/per),left=b-per*p-Math.max(0,per-1)*k;if(per<1)return show("cutResult",t("enterValid"));show("cutResult",`<small>${t("boards")}</small><strong>${boards}</strong>${t("piecesPerBoard")}: ${per}<br>${t("remainder")}: ${fmt(Math.max(0,left))} · Total pieces possible: ${per*boards}`)}
+function quickCalc(){const s=document.getElementById("expression").value.trim();if(!s||!/^[0-9+\-*/().\s]+$/.test(s))return show("quickResult",t("invalidExpression"));try{const result=Function('"use strict";return ('+s+')')();if(!Number.isFinite(result))throw Error();show("quickResult",`<small>${t("result")}</small><strong>${fmt(result)}</strong>`)}catch(e){show("quickResult",t("invalidExpression"))}}
+</script>
+</body>
+</html>
